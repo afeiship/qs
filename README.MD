@@ -1,21 +1,34 @@
-# ushell-module-crontab
-> Unix like shell module for crontab.
+# qs
+> A tiny querystring parser.
 
-## resources:
-+ http://www.cnblogs.com/ccdc/archive/2012/06/01/2529471.html
+[![version][version-image]][version-url]
+[![license][license-image]][license-url]
+[![size][size-image]][size-url]
+[![download][download-image]][download-url]
 
-## commands:
-
-## description:
-```conf
-说明：
-vixie-cron软件包是cron的主程序；
-crontabs软件包是用来安装、卸装、或列举用来驱动 cron 守护进程的表格的程序。
-
-cron 是linux的内置服务，但它不自动起来，可以用以下的方法启动、关闭这个服务：
-
-/sbin/service crond start #启动服务
-/sbin/service crond stop #关闭服务
-/sbin/service crond restart #重启服务
-/sbin/service crond reload #重新载入配置
+## installation
+```shell
+npm install @jswork/qs
 ```
+
+## usage
+```js
+import qs from '@jswork/qs';
+
+// usage goes here.
+```
+
+## license
+Code released under [the MIT license](https://github.com/afeiship/qs/blob/master/LICENSE.txt).
+
+[version-image]: https://img.shields.io/npm/v/@jswork/qs
+[version-url]: https://npmjs.org/package/@jswork/qs
+
+[license-image]: https://img.shields.io/npm/l/@jswork/qs
+[license-url]: https://github.com/afeiship/qs/blob/master/LICENSE.txt
+
+[size-image]: https://img.shields.io/bundlephobia/minzip/@jswork/qs
+[size-url]: https://github.com/afeiship/qs/blob/master/dist/qs.min.js
+
+[download-image]: https://img.shields.io/npm/dm/@jswork/qs
+[download-url]: https://www.npmjs.com/package/@jswork/qs
