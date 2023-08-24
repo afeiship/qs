@@ -1,5 +1,7 @@
 declare var wx: any;
 
+// @thank to: https://github.com/jerrybendy/url-search-params-polyfill
+
 const MSG = {
   NOT_SUPPORT: 'Please use url-search-params-polyfill',
 };
