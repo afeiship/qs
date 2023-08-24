@@ -8,13 +8,9 @@ const MSG = {
 
 interface IStringifyOptions {
   /**
-   * 是否添加查询前缀
-   */
-  addQueryPrefix?: boolean;
-  /**
    * 数组格式
    */
-  arrayFormat?: 'bracket' | 'index' | 'none';
+  arrayFormat?: 'bracket' | 'comma' | 'index' | 'none';
   /**
    * 是否编码
    */
@@ -30,7 +26,6 @@ interface IStringifyOptions {
 }
 
 const defaultStringifyOptions: IStringifyOptions = {
-  addQueryPrefix: false,
   arrayFormat: 'none',
   encode: true,
   encodeValuesOnly: false,
@@ -45,13 +40,14 @@ class Qs {
 
   public stringify(inObj, inOptions?: IStringifyOptions) {
     const opts: IStringifyOptions = { ...defaultStringifyOptions, ...inOptions };
+    const { arrayFormat, encode, encodeValuesOnly, ignoreEmptyString } = opts;
     const params = new URLSearchParams();
-
-    // const params = new URLSearchParams();
-    // Object.keys(inObj).forEach((key) => {
-    //   params.append(key, inObj[key]);
-    // });
-    // return params.toString();
+    const keys = Object.keys(inObj);
+    for (let i = 0; i < keys.length; i++) {
+      const key = keys[i];
+      const value = inObj[key];
+    }
+    return params.toString();
   }
 
   public parse(inString, inOptions?) {
