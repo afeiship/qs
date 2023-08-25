@@ -15,7 +15,8 @@ npm install @jswork/qs
 ```js
 import qs from '@jswork/qs';
 
-// usage goes here.
+qs.parse('a=1&b=2'); // { a: '1', b: '2' }
+qs.stringify({ a: 1, b: 2 }); // a=1&b=2
 ```
 
 ## license
@@ -28,7 +29,7 @@ Code released under [the MIT license](https://github.com/afeiship/qs/blob/master
 [license-url]: https://github.com/afeiship/qs/blob/master/LICENSE.txt
 
 [size-image]: https://img.shields.io/bundlephobia/minzip/@jswork/qs
-[size-url]: https://github.com/afeiship/qs/blob/master/dist/qs.min.js
+[size-url]: https://github.com/afeiship/qs/blob/master/dist/index.min.js
 
 [download-image]: https://img.shields.io/npm/dm/@jswork/qs
 [download-url]: https://www.npmjs.com/package/@jswork/qs

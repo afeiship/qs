@@ -1,13 +1,10 @@
 import fn from '../src';
 
-describe('api.basic', () => {
-  test('normail case parse/stringify', () => {
+describe('qs.stringify', () => {
+  test('normail case stringify', () => {
     const obj = { a: 1, b: 2 };
     const str = fn.stringify(obj);
-    const obj2 = fn.parse(str);
-
     expect(str).toBe('a=1&b=2');
-    expect(obj2).toEqual({ a: '1', b: '2' });
   });
 
   test('stringify-arrayFormat:bracket', () => {
@@ -32,5 +29,24 @@ describe('api.basic', () => {
     const obj = { a: [1, 2] };
     const str = fn.stringify(obj, { arrayFormat: 'none' });
     expect(str).toBe('a=1&a=2');
+  });
+
+  test('stringify-customize get', () => {
+    const obj = { a: 1, b: 2 };
+    const str = fn.stringify(obj, {
+      get(params) {
+        // console.log('params:', params);
+        return 'abc';
+      },
+    });
+    expect(str).toBe('abc');
+  });
+
+  test('stringify - ignoreEmptyString', () => {
+    const obj = { a: '', b: 2 };
+    const str1 = fn.stringify(obj, { ignoreEmptyString: true });
+    const str2 = fn.stringify(obj, { ignoreEmptyString: false });
+    expect(str1).toBe('b=2');
+    expect(str2).toBe('a=&b=2');
   });
 });

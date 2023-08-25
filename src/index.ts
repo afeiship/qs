@@ -6,9 +6,13 @@ const MSG = {
   NOT_SUPPORT: 'Please use url-search-params-polyfill',
 };
 
+interface IStringifyTarget {
+  [key: string]: any;
+}
+
 interface IStringifyOptions {
   /**
-   * 数组格式
+   * Array format
    * bracket: a[]=1&a[]=2
    * comma: a=1,2
    * index: a[0]=1&a[1]=2
@@ -16,25 +20,31 @@ interface IStringifyOptions {
    */
   arrayFormat?: 'bracket' | 'comma' | 'index' | 'none';
   /**
-   * 是否编码
-   */
-  encode?: boolean;
-  /**
-   * 是否只编码值
-   */
-  encodeValuesOnly?: boolean;
-  /**
-   * 是否排除空值
+   * Ignore empty string, default false.
    */
   ignoreEmptyString?: boolean;
+  /**
+   * Custom get method, default return string.
+   */
+  get?: (value: URLSearchParams) => string;
+}
+
+interface IParseOptions {
+  /**
+   * If try parse value, use JSON.parse/split(',') to parse value.
+   */
+  tryParse?: boolean;
+  /**
+   * Custom get method, default return object.
+   */
+  get?: (value: URLSearchParams) => any;
 }
 
 const defaultStringifyOptions: IStringifyOptions = {
   arrayFormat: 'none',
-  encode: true,
-  encodeValuesOnly: false,
   ignoreEmptyString: false,
 };
+const defaultParseOptions: IParseOptions = { tryParse: false };
 
 class Qs {
   constructor() {
@@ -42,25 +52,79 @@ class Qs {
     if (!supportURLSearchParams) console.warn(MSG.NOT_SUPPORT);
   }
 
-  public stringify(inObj, inOptions?: IStringifyOptions) {
-    const opts: IStringifyOptions = { ...defaultStringifyOptions, ...inOptions };
-    const { arrayFormat, encode, encodeValuesOnly, ignoreEmptyString } = opts;
+  public stringify(inObj: IStringifyTarget, inOptions?: IStringifyOptions) {
+    const { arrayFormat, ignoreEmptyString, get } = { ...defaultStringifyOptions, ...inOptions };
     const params = new URLSearchParams();
-    const keys = Object.keys(inObj);
-    for (let i = 0; i < keys.length; i++) {
-      const key = keys[i];
+    const keys1 = Object.keys(inObj);
+    for (let i = 0; i < keys1.length; i++) {
+      const key = keys1[i];
       const value = inObj[key];
+      const isArrayValue = Array.isArray(value);
+      if (isArrayValue) {
+        switch (arrayFormat) {
+          case 'bracket':
+            value.forEach((item) => params.append(`${key}[]`, item));
+            break;
+          case 'comma':
+            params.append(key, value.join(','));
+            break;
+          case 'index':
+            value.forEach((item, index) => params.append(`${key}[${index}]`, item));
+            break;
+          case 'none':
+            value.forEach((item) => params.append(key, item));
+            break;
+        }
+      } else {
+        params.append(key, value);
+      }
     }
-    return params.toString();
+
+    // trim emtpy string
+    const keys2 = params.keys() as any;
+    for (const key of keys2) {
+      const value = params.get(key);
+      if (ignoreEmptyString && value === '') params.delete(key);
+    }
+
+    if (get) return get(params);
+    return decodeURIComponent(params.toString());
   }
 
-  public parse(inString, inOptions?) {
-    const params = new URLSearchParams(inString);
+  public parse(inString: string, inOptions?: IParseOptions) {
+    const { tryParse, get } = { ...defaultParseOptions, ...inOptions };
+    const isEncode = inString.indexOf('%') > -1;
+    const str = isEncode ? decodeURIComponent(inString) : inString;
+    const params = new URLSearchParams(str);
+    if (get) return get(params);
     const obj = {};
-    params.forEach((value, key) => {
-      obj[key] = value;
+    params.forEach((value, originalKey) => {
+      // get a from `a[0] or a[] or a`
+      const key = originalKey.replace(/\[\d*\]$/, '');
+      const val = this.tryParseValue(value, tryParse);
+      const hasValue = obj[key];
+      if (hasValue) {
+        if (Array.isArray(obj[key])) {
+          obj[key].push(val);
+        } else {
+          obj[key] = [obj[key], val];
+        }
+      } else {
+        obj[key] = val;
+      }
     });
     return obj;
+  }
+
+  private tryParseValue(inValue: string, inIsTry?) {
+    if (!inIsTry) return inValue;
+    const hasComma = inValue.indexOf(',') > -1;
+    try {
+      return JSON.parse(inValue);
+    } catch (error) {
+      if (hasComma) return inValue.split(',');
+      return inValue;
+    }
   }
 }
 
