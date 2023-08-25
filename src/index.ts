@@ -22,7 +22,11 @@ interface IStringifyOptions {
   /**
    * Ignore empty string, default false.
    */
-  ignoreEmptyString?: boolean;
+  ignoreEmpty?: boolean;
+  /**
+   * Check value is empty, default check value === ''.
+   */
+  isEmpty?: (value: string) => boolean;
   /**
    * Custom get method, default return string.
    */
@@ -42,7 +46,8 @@ interface IParseOptions {
 
 const defaultStringifyOptions: IStringifyOptions = {
   arrayFormat: 'none',
-  ignoreEmptyString: false,
+  ignoreEmpty: false,
+  isEmpty: (value) => value === '',
 };
 const defaultParseOptions: IParseOptions = { tryParse: false };
 
@@ -59,7 +64,7 @@ class Qs {
    * @returns
    */
   public stringify(inObj: IStringifyTarget, inOptions?: IStringifyOptions) {
-    const { arrayFormat, ignoreEmptyString, get } = { ...defaultStringifyOptions, ...inOptions };
+    const { arrayFormat, ignoreEmpty, isEmpty, get } = { ...defaultStringifyOptions, ...inOptions };
     const params = new URLSearchParams();
 
     for (const [key, value] of Object.entries(inObj)) {
@@ -86,9 +91,9 @@ class Qs {
       }
     }
 
-    if (ignoreEmptyString) {
+    if (ignoreEmpty) {
       for (const [key, value] of params.entries()) {
-        if (value === '') params.delete(key);
+        if (isEmpty!(value)) params.delete(key);
       }
     }
 

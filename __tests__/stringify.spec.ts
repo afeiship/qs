@@ -56,10 +56,10 @@ describe('qs.stringify', () => {
     expect(str).toBe('abc');
   });
 
-  test('stringify - ignoreEmptyString', () => {
+  test('stringify - ignoreEmpty', () => {
     const obj = { a: '', b: 2 };
-    const str1 = fn.stringify(obj, { ignoreEmptyString: true });
-    const str2 = fn.stringify(obj, { ignoreEmptyString: false });
+    const str1 = fn.stringify(obj, { ignoreEmpty: true });
+    const str2 = fn.stringify(obj, { ignoreEmpty: false });
     expect(str1).toBe('b=2');
     expect(str2).toBe('a=&b=2');
   });
