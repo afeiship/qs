@@ -1,6 +1,6 @@
 {
   "name": "@jswork/qs",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A tiny querystring parser.",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
