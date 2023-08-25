@@ -1,6 +1,6 @@
 {
   "name": "@jswork/qs",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A tiny querystring parser.",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
@@ -51,5 +51,13 @@
       ],
       "@babel/preset-typescript"
     ]
-  }
+  },
+  "keywords": [
+    "decode",
+    "encode",
+    "parse",
+    "qs",
+    "querystring",
+    "stringify"
+  ]
 }
