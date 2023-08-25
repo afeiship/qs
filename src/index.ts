@@ -9,6 +9,10 @@ const MSG = {
 interface IStringifyOptions {
   /**
    * 数组格式
+   * bracket: a[]=1&a[]=2
+   * comma: a=1,2
+   * index: a[0]=1&a[1]=2
+   * none: a=1&a=2
    */
   arrayFormat?: 'bracket' | 'comma' | 'index' | 'none';
   /**
