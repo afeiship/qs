@@ -61,10 +61,8 @@ class Qs {
   public stringify(inObj: IStringifyTarget, inOptions?: IStringifyOptions) {
     const { arrayFormat, ignoreEmptyString, get } = { ...defaultStringifyOptions, ...inOptions };
     const params = new URLSearchParams();
-    const keys1 = Object.keys(inObj);
-    for (let i = 0; i < keys1.length; i++) {
-      const key = keys1[i];
-      const value = inObj[key];
+
+    for (const [key, value] of Object.entries(inObj)) {
       const isArrayValue = Array.isArray(value);
       const isObject = value && typeof value === 'object';
       if (isArrayValue) {
@@ -88,11 +86,10 @@ class Qs {
       }
     }
 
-    // trim emtpy string
-    const keys2 = params.keys() as any;
-    for (const key of keys2) {
-      const value = params.get(key);
-      if (ignoreEmptyString && value === '') params.delete(key);
+    if (ignoreEmptyString) {
+      for (const [key, value] of params.entries()) {
+        if (value === '') params.delete(key);
+      }
     }
 
     if (get) return get(params);
