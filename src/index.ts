@@ -66,6 +66,7 @@ class Qs {
       const key = keys1[i];
       const value = inObj[key];
       const isArrayValue = Array.isArray(value);
+      const isObject = value && typeof value === 'object';
       if (isArrayValue) {
         switch (arrayFormat) {
           case 'bracket':
@@ -82,7 +83,8 @@ class Qs {
             break;
         }
       } else {
-        params.append(key, value);
+        const val = isObject ? encodeURIComponent(JSON.stringify(value)) : value;
+        params.append(key, val);
       }
     }
 

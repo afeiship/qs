@@ -7,6 +7,20 @@ describe('qs.stringify', () => {
     expect(str).toBe('a=1&b=2');
   });
 
+  test('stringify-nested obj', () => {
+    const obj = {
+      a: 1,
+      b: {
+        c: 2,
+        d: {
+          e: 3,
+        },
+      },
+    };
+    const str = fn.stringify(obj);
+    expect(str).toBe('a=1&b=%7B%22c%22%3A2%2C%22d%22%3A%7B%22e%22%3A3%7D%7D');
+  });
+
   test('stringify-arrayFormat:bracket', () => {
     const obj = { a: [1, 2] };
     const str = fn.stringify(obj, { arrayFormat: 'bracket' });

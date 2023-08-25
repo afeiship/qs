@@ -13,6 +13,14 @@ describe('qs.parse', () => {
     expect(obj).toEqual({ a: 1, b: 2 });
   });
 
+  test('parse with json string', () => {
+    const s1 = 'a=1&b=%7B%22c%22%3A2%2C%22d%22%3A%7B%22e%22%3A3%7D%7D';
+    const obj = fn.parse(s1);
+    const obj2 = fn.parse(s1, { tryParse: true });
+    expect(obj).toEqual({ a: '1', b: '{"c":2,"d":{"e":3}}' });
+    expect(obj2).toEqual({ a: 1, b: { c: 2, d: { e: 3 } } });
+  });
+
   test('parse-tryParse json', () => {
     const s1 = 'a=1&b=2&c=%7B%22d%22%3A%22e%22%7D';
     const obj = fn.parse(s1, { tryParse: true });
