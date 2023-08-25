@@ -42,12 +42,14 @@ describe('qs.parse', () => {
     const obj = fn.parse(s1);
     const obj2 = fn.parse(s1, { tryParse: true });
     expect(obj).toEqual({ a: '1', b: '2', c: '3,4' });
-    expect(obj2).toEqual({ a: 1, b: 2, c: ['3', '4'] });
+    expect(obj2).toEqual({ a: 1, b: 2, c: [3, 4] });
   });
 
   test('parse-arrayFormat:index', () => {
     const s1 = 'a=1&b=2&c[0]=3&c[1]=4';
     const obj = fn.parse(s1);
+    const obj2 = fn.parse(s1, { tryParse: true });
     expect(obj).toEqual({ a: '1', b: '2', c: ['3', '4'] });
+    expect(obj2).toEqual({ a: 1, b: 2, c: [3, 4] });
   });
 });

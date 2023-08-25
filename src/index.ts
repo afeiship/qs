@@ -52,6 +52,12 @@ class Qs {
     if (!supportURLSearchParams) console.warn(MSG.NOT_SUPPORT);
   }
 
+  /**
+   * Stringify object to query string.
+   * @param inObj
+   * @param inOptions
+   * @returns
+   */
   public stringify(inObj: IStringifyTarget, inOptions?: IStringifyOptions) {
     const { arrayFormat, ignoreEmptyString, get } = { ...defaultStringifyOptions, ...inOptions };
     const params = new URLSearchParams();
@@ -91,6 +97,12 @@ class Qs {
     return decodeURIComponent(params.toString());
   }
 
+  /**
+   * Parse query string to object.
+   * @param inString
+   * @param inOptions
+   * @returns
+   */
   public parse(inString: string, inOptions?: IParseOptions) {
     const { tryParse, get } = { ...defaultParseOptions, ...inOptions };
     const isEncode = inString.indexOf('%') > -1;
@@ -118,13 +130,18 @@ class Qs {
 
   private tryParseValue(inValue: string, inIsTry?) {
     if (!inIsTry) return inValue;
-    const hasComma = inValue.indexOf(',') > -1;
+    let result: string | string[] = inValue;
     try {
-      return JSON.parse(inValue);
+      result = JSON.parse(inValue);
     } catch (error) {
-      if (hasComma) return inValue.split(',');
-      return inValue;
+      const hasComma = inValue.indexOf(',') > -1;
+      if (hasComma) result = inValue.split(',');
     }
+
+    if (Array.isArray(result)) {
+      result = result.map((item) => this.tryParseValue(item, inIsTry));
+    }
+    return result;
   }
 }
 
