@@ -29,7 +29,7 @@ Code released under [the MIT license](https://github.com/afeiship/qs/blob/master
 [license-url]: https://github.com/afeiship/qs/blob/master/LICENSE.txt
 
 [size-image]: https://img.shields.io/bundlephobia/minzip/@jswork/qs
-[size-url]: https://github.com/afeiship/qs/blob/master/dist/index.min.js
+[size-url]: https://github.com/afeiship/qs/blob/master/dist/index.js
 
 [download-image]: https://img.shields.io/npm/dm/@jswork/qs
 [download-url]: https://www.npmjs.com/package/@jswork/qs
