@@ -132,8 +132,8 @@ class Qs {
     return obj;
   }
 
-  private tryParseValue(inValue: string, inIsTry?) {
-    if (!inIsTry) return inValue;
+  private tryParseValue(inValue: string, inTryParse?) {
+    if (!inTryParse) return inValue;
     let result: string | string[] = inValue;
     try {
       result = JSON.parse(inValue);
@@ -143,7 +143,7 @@ class Qs {
     }
 
     if (Array.isArray(result)) {
-      result = result.map((item) => this.tryParseValue(item, inIsTry));
+      result = result.map((item) => this.tryParseValue(item, inTryParse));
     }
     return result;
   }
