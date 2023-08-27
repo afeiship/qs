@@ -132,7 +132,7 @@ class Qs {
     return obj;
   }
 
-  private tryParseValue(inValue: string, inTryParse?) {
+  private tryParseValue(inValue: string, inTryParse?: boolean) {
     if (!inTryParse) return inValue;
     let result: string | string[] = inValue;
     try {
